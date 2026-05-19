@@ -74,19 +74,22 @@ const onCardLeave = e => {
    ════════════════════════════════════════════════════════════════════════════ */
 const PLANS = [
   {
-    id: 'basic', name: 'Basic', price: '490', desc: 'Pro jednotlivce a malé salony',
-    features: ['Až 3 zaměstnanci', 'Až 5 služeb', 'Online rezervace 24/7', 'E-mailové notifikace'],
-    cta: 'Vybrat Basic', highlight: false,
+    id: 'lite', name: 'Lite', price: '189', desc: 'Vlastní zprávy, platby a vouchery',
+    features: ['Vlastní zprávy a připomínky', 'Online platby', 'Vouchery', 'Pracovní doba a blokace'],
+    cta: 'Vybrat Lite', highlight: false,
+    href: 'https://app.terminuj.cz/register?plan=lite',
   },
   {
-    id: 'pro', name: 'Pro', badge: '★', price: '990', desc: 'Pro rostoucí salony a studia',
-    features: ['Neomezení zaměstnanci', 'Online platby (Stripe & GoPay)', 'Pokročilé statistiky', 'Vlastní e-mailové šablony', 'Vouchery & balíčky'],
-    cta: 'Vybrat Pro', highlight: true,
+    id: 'business', name: 'Business', badge: '★', price: '349', desc: 'Vlastní design, analytika, více týmů',
+    features: ['Odstranění brandingu', 'Vlastní design widgetu', 'Balíčky služeb', 'Pokročilá analytika', 'Více zaměstnanců a provozů'],
+    cta: 'Vybrat Business', highlight: true,
+    href: 'https://app.terminuj.cz/register?plan=business',
   },
   {
-    id: 'enterprise', name: 'Enterprise', price: '2 490', desc: 'Pro řetězce a více poboček',
-    features: ['Vše z Pro', 'Více poboček', 'Vlastní doména', 'SLA & dedikovaná podpora'],
-    cta: 'Kontaktovat tým', highlight: false,
+    id: 'premium', name: 'Premium', price: '790', desc: 'Pokročilé reporty a prioritní podpora',
+    features: ['Pokročilé reporty', 'Rozšířené nastavení designu', 'Prioritní podpora', 'Vyšší provozní limity'],
+    cta: 'Vybrat Premium', highlight: false,
+    href: 'https://app.terminuj.cz/register?plan=premium',
   },
 ];
 
@@ -184,7 +187,7 @@ function PackagesCard() {
 
       {/* CTA */}
       <a
-        href="#registrace"
+        href={plan.href}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
           padding: '12px 20px',

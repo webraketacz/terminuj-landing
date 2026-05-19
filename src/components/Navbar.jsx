@@ -223,7 +223,7 @@ function MobileMenu({ open, onClose }) {
           transition: `opacity 0.4s ease ${open ? 560 : 0}ms, transform 0.4s ease ${open ? 560 : 0}ms`,
         }}>
           <a
-            href="#prihlaseni"
+            href="https://app.terminuj.cz/login"
             onClick={onClose}
             style={{
               fontFamily: 'var(--font-body)',
@@ -242,7 +242,7 @@ function MobileMenu({ open, onClose }) {
             Přihlásit se
           </a>
           <a
-            href="#registrace"
+            href="https://app.terminuj.cz/register"
             onClick={onClose}
             className="btn-premium"
             style={{ fontSize: '15px', padding: '14px 28px', borderRadius: '999px' }}
@@ -375,7 +375,7 @@ export default function Navbar() {
           {/* Desktop CTA + Hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <a
-              href="#prihlaseni"
+              href="https://app.terminuj.cz/login"
               className="nav-login"
               style={{
                 fontFamily: 'var(--font-body)',
@@ -389,7 +389,7 @@ export default function Navbar() {
               Přihlásit
             </a>
             <a
-              href="#registrace"
+              href="https://app.terminuj.cz/register"
               className="btn-premium nav-links"
               style={{ padding: '10px 20px', fontSize: '14px', borderRadius: '999px' }}
             >

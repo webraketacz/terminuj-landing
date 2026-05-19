@@ -1,68 +1,80 @@
 import React, { useState } from 'react';
 
-const plans = [
+const PLANS = [
   {
+    id: 'free',
     name: 'Free',
-    desc: 'Pro vyzkoušení a malé začátky.',
-    priceMonth: '0',
-    priceYear: '0',
+    desc: 'Pro jednotlivce a začínající provozy, které chtějí spustit rezervace bez vstupních nákladů.',
+    priceMonth: 0,
+    priceYear: 0,
+    label: 'navždy',
     features: [
-      'Základní přístup',
-      '1 zaměstnanec',
-      '2 služby',
-      'E-mailová podpora',
-      'GDPR & SSL v ceně',
-    ],
-    btn: 'Vyzkoušet zdarma',
-    highlight: false,
-  },
-  {
-    name: 'Basic',
-    desc: 'Pro jednotlivce a malé salony.',
-    priceMonth: '490',
-    priceYear: '4 490',
-    features: [
-      'Až 3 zaměstnanci',
-      'Až 5 služeb',
-      'Online rezervace 24/7',
+      'Veřejná rezervační stránka',
+      'Widget na web / iframe',
       'E-mailové notifikace',
-      'Základní statistiky',
+      'Základní přehled rezervací',
+      'Branding Terminuj.cz',
     ],
-    btn: 'Vybrat Basic',
+    btn: 'Začít zdarma',
+    href: 'https://app.terminuj.cz/register',
     highlight: false,
   },
   {
-    name: 'Pro',
-    desc: 'Pro rostoucí salony a studia.',
-    priceMonth: '990',
-    priceYear: '8 990',
+    id: 'lite',
+    name: 'Lite',
+    desc: 'Ideální pro služby, které chtějí víc automatiky, zpráv a základní prodej bez omezení.',
+    priceMonth: 189,
+    priceYear: 157,
+    label: '/měs.',
     features: [
-      'Neomezení zaměstnanci',
-      'Neomezené služby',
-      'Online platby (Stripe & GoPay)',
-      'Vouchery a balíčky',
-      'Vlastní e-mailové šablony',
-      'Pokročilé statistiky',
-      'Prioritní podpora',
+      'Vše z Free',
+      'Vlastní zprávy a připomínky',
+      'Pracovní doba, volná a blokace',
+      'Online platby',
+      'Vouchery',
+      'Branding Terminuj.cz',
     ],
-    btn: 'Vybrat Pro',
-    highlight: true,
-    badge: 'Nejoblíbenější',
+    btn: 'Vybrat Lite',
+    href: 'https://app.terminuj.cz/register?plan=lite',
+    highlight: false,
   },
   {
-    name: 'Enterprise',
-    desc: 'Pro řetězce a větší firmy.',
-    priceMonth: '2 490',
-    priceYear: '22 490',
+    id: 'business',
+    name: 'Business',
+    badge: 'Nejoblíbenější',
+    desc: 'Silný balíček pro aktivní týmy, které chtějí prodávat, automatizovat a přizpůsobit si vše.',
+    priceMonth: 349,
+    priceYear: 290,
+    label: '/měs.',
     features: [
-      'Vše z Pro',
-      'Více poboček',
-      'Stripe Connect (výplaty)',
-      'Vlastní doména',
-      'SLA & dedikovaná podpora',
-      'Individuální integrace',
+      'Vše z Lite',
+      'Odstranění brandingu Terminuj.cz',
+      'Vlastní design widgetu a stránky',
+      'Balíčky služeb',
+      'Pokročilá analytika',
+      'Více zaměstnanců a provozů',
     ],
-    btn: 'Kontaktovat tým',
+    btn: 'Upgradovat',
+    href: 'https://app.terminuj.cz/register?plan=business',
+    highlight: true,
+  },
+  {
+    id: 'premium',
+    name: 'Premium',
+    desc: 'Pro firmy, které chtějí maximum přizpůsobení, pokročilý prodej a vyšší provozní limity.',
+    priceMonth: 790,
+    priceYear: 656,
+    label: '/měs.',
+    features: [
+      'Vše z Business',
+      'Pokročilé reporty',
+      'Rozšířené nastavení designu',
+      'Prioritní podpora',
+      'Rozšířené platby a prodej',
+      'Vyšší provozní limity',
+    ],
+    btn: 'Upgradovat',
+    href: 'https://app.terminuj.cz/register?plan=premium',
     highlight: false,
   },
 ];
@@ -93,8 +105,8 @@ export default function Pricing() {
             <br />
             <span className="gradient-text">žádná překvapení.</span>
           </h2>
-          <p style={{ maxWidth: '600px', margin: '0 auto 32px', fontSize: '17px', lineHeight: 1.55, color: 'var(--ink-secondary)' }}>
-            Začněte zdarma. Upgradujte kdykoli. Zrušení bez sankcí. Žádné transakční poplatky z plateb.
+          <p style={{ maxWidth: '500px', margin: '0 auto 32px', fontSize: '17px', lineHeight: 1.55, color: 'var(--ink-secondary)' }}>
+            Začněte zdarma. Upgradujte kdykoli. Zrušení bez poplatků.
           </p>
 
           {/* Billing toggle */}
@@ -166,19 +178,18 @@ export default function Pricing() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
             gap: '20px',
             alignItems: 'stretch',
           }}
         >
-          {plans.map((plan) => {
+          {PLANS.map((plan) => {
             const price = yearly ? plan.priceYear : plan.priceMonth;
-            const suffix = yearly ? '/rok' : '/měsíc';
-            const isFree = plan.priceMonth === '0';
+            const isFree = plan.priceMonth === 0;
 
             return (
               <div
-                key={plan.name}
+                key={plan.id}
                 className={plan.highlight ? 'dark-card-grain' : 'card-premium'}
                 style={
                   plan.highlight
@@ -192,6 +203,7 @@ export default function Pricing() {
                         flexDirection: 'column',
                         overflow: 'hidden',
                         boxShadow: '0 24px 60px -16px rgba(91, 79, 233, 0.45)',
+                        border: '1.5px solid rgba(91,79,233,0.35)',
                       }
                     : {
                         padding: '36px 28px',
@@ -203,19 +215,12 @@ export default function Pricing() {
               >
                 {plan.highlight && (
                   <>
-                    <div
-                      aria-hidden
-                      style={{
-                        position: 'absolute',
-                        top: '-40px',
-                        right: '-40px',
-                        width: '180px',
-                        height: '180px',
-                        background: 'rgba(232, 155, 108, 0.3)',
-                        filter: 'blur(60px)',
-                        pointerEvents: 'none',
-                      }}
-                    />
+                    <div aria-hidden style={{
+                      position: 'absolute', top: '-40px', right: '-40px',
+                      width: '180px', height: '180px',
+                      background: 'rgba(91, 79, 233, 0.25)',
+                      filter: 'blur(60px)', pointerEvents: 'none',
+                    }} />
                     <div
                       style={{
                         display: 'inline-flex',
@@ -223,8 +228,8 @@ export default function Pricing() {
                         alignItems: 'center',
                         gap: '6px',
                         padding: '5px 12px',
-                        background: 'rgba(232, 155, 108, 0.2)',
-                        color: 'var(--accent-warm)',
+                        background: 'rgba(91,79,233,0.25)',
+                        color: '#A09AF8',
                         borderRadius: '999px',
                         fontSize: '11px',
                         fontWeight: 700,
@@ -241,152 +246,101 @@ export default function Pricing() {
                   </>
                 )}
 
-                <h3
-                  style={{
-                    fontSize: '24px',
-                    fontWeight: 700,
-                    letterSpacing: '-0.025em',
-                    marginBottom: '6px',
-                    position: 'relative',
-                    zIndex: 1,
-                    color: plan.highlight ? '#fff' : 'var(--ink-primary)',
-                  }}
-                >
+                <h3 style={{
+                  fontSize: '22px', fontWeight: 700, letterSpacing: '-0.025em',
+                  marginBottom: '8px', position: 'relative', zIndex: 1,
+                  color: plan.highlight ? '#fff' : 'var(--ink-primary)',
+                }}>
                   {plan.name}
                 </h3>
-                <p
-                  style={{
-                    fontSize: '13.5px',
-                    color: plan.highlight ? 'rgba(255,255,255,0.6)' : 'var(--ink-secondary)',
-                    marginBottom: '24px',
-                    lineHeight: 1.5,
-                    minHeight: '40px',
-                    position: 'relative',
-                    zIndex: 1,
-                  }}
-                >
+
+                <p style={{
+                  fontSize: '13px',
+                  color: plan.highlight ? 'rgba(255,255,255,0.55)' : 'var(--ink-secondary)',
+                  marginBottom: '24px', lineHeight: 1.5,
+                  minHeight: '54px', position: 'relative', zIndex: 1,
+                }}>
                   {plan.desc}
                 </p>
 
                 {/* Price */}
-                <div style={{ marginBottom: '28px', position: 'relative', zIndex: 1, display: 'flex', alignItems: 'baseline', gap: '6px', flexWrap: 'wrap' }}>
-                  {!isFree && (
-                    <span
-                      className="font-mono"
-                      style={{
-                        fontSize: '42px',
-                        fontWeight: 700,
-                        color: plan.highlight ? '#fff' : 'var(--ink-primary)',
-                      }}
-                    >
-                      {price}
-                    </span>
-                  )}
-                  {isFree && (
-                    <span
-                      className="font-mono"
-                      style={{
-                        fontSize: '42px',
-                        fontWeight: 700,
-                        color: plan.highlight ? '#fff' : 'var(--ink-primary)',
-                      }}
-                    >
-                      0
-                    </span>
-                  )}
-                  <span style={{ fontSize: '14px', color: plan.highlight ? 'rgba(255,255,255,0.5)' : 'var(--ink-tertiary)', fontWeight: 500 }}>
-                    Kč{!isFree && suffix}
+                <div style={{ marginBottom: '28px', position: 'relative', zIndex: 1, display: 'flex', alignItems: 'baseline', gap: '4px', flexWrap: 'wrap' }}>
+                  <span className="font-mono" style={{
+                    fontSize: '44px', fontWeight: 700, lineHeight: 1,
+                    color: plan.highlight ? '#fff' : 'var(--ink-primary)',
+                  }}>
+                    {price}
+                  </span>
+                  <span style={{ fontSize: '14px', color: plan.highlight ? 'rgba(255,255,255,0.45)' : 'var(--ink-tertiary)', fontWeight: 500 }}>
+                    {' '}Kč
+                  </span>
+                  <span style={{ fontSize: '13px', color: plan.highlight ? 'rgba(255,255,255,0.45)' : 'var(--ink-tertiary)', fontWeight: 400 }}>
+                    {isFree ? 'navždy' : yearly ? '/měs. ročně' : plan.label}
                   </span>
                 </div>
 
                 {/* Features */}
                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px', flex: 1, position: 'relative', zIndex: 1 }}>
                   {plan.features.map((f) => (
-                    <li
-                      key={f}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '10px',
-                        padding: '7px 0',
-                        fontSize: '14px',
-                        color: plan.highlight ? 'rgba(255,255,255,0.85)' : 'var(--ink-secondary)',
-                        lineHeight: 1.5,
-                      }}
-                    >
+                    <li key={f} style={{
+                      display: 'flex', alignItems: 'flex-start', gap: '10px',
+                      padding: '7px 0', fontSize: '14px', lineHeight: 1.45,
+                      color: plan.highlight ? 'rgba(255,255,255,0.82)' : 'var(--ink-secondary)',
+                      borderBottom: `1px solid ${plan.highlight ? 'rgba(255,255,255,0.06)' : 'var(--border)'}`,
+                    }}>
                       <iconify-icon
                         icon="solar:check-circle-bold"
-                        width="18"
-                        height="18"
-                        style={{
-                          color: plan.highlight ? 'var(--accent-warm)' : 'var(--violet)',
-                          flexShrink: 0,
-                          marginTop: '1px',
-                        }}
+                        width="16" height="16"
+                        style={{ color: plan.highlight ? '#A09AF8' : 'var(--violet)', flexShrink: 0, marginTop: '2px' }}
                       ></iconify-icon>
                       {f}
                     </li>
                   ))}
                 </ul>
 
-                <button
-                  className={plan.highlight ? '' : ''}
+                <a
+                  href={plan.href}
                   style={
                     plan.highlight
                       ? {
-                          width: '100%',
-                          padding: '14px',
-                          borderRadius: '12px',
-                          border: 'none',
-                          background: 'linear-gradient(135deg, #E89B6C 0%, #F5B989 100%)',
-                          color: '#1A1A1A',
-                          fontFamily: 'var(--font-body)',
-                          fontWeight: 700,
-                          fontSize: '14px',
-                          cursor: 'pointer',
+                          display: 'block', width: '100%', padding: '14px',
+                          borderRadius: '12px', border: 'none',
+                          background: 'linear-gradient(135deg, #5B4FE9 0%, #7C6FF5 100%)',
+                          color: '#fff',
+                          fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '14px',
+                          cursor: 'pointer', textDecoration: 'none', textAlign: 'center',
                           transition: 'transform 0.15s ease, box-shadow 0.15s ease',
-                          boxShadow: '0 8px 20px rgba(232, 155, 108, 0.35)',
-                          position: 'relative',
-                          zIndex: 1,
+                          boxShadow: '0 8px 20px rgba(91, 79, 233, 0.45)',
+                          position: 'relative', zIndex: 1,
                         }
                       : {
-                          width: '100%',
-                          padding: '14px',
+                          display: 'block', width: '100%', padding: '14px',
                           borderRadius: '12px',
                           border: '1px solid var(--border)',
                           background: 'var(--surface-elevated)',
                           color: 'var(--ink-primary)',
-                          fontFamily: 'var(--font-body)',
-                          fontWeight: 600,
-                          fontSize: '14px',
-                          cursor: 'pointer',
+                          fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '14px',
+                          cursor: 'pointer', textDecoration: 'none', textAlign: 'center',
                           transition: 'all 0.15s ease',
+                          boxSizing: 'border-box',
                         }
                   }
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
                 >
                   {plan.btn}
-                </button>
+                </a>
               </div>
             );
           })}
         </div>
 
         {/* Footer note */}
-        <p
-          style={{
-            textAlign: 'center',
-            marginTop: '32px',
-            fontSize: '13px',
-            color: 'var(--ink-tertiary)',
-          }}
-        >
-          Všechny plány zahrnují SSL, denní zálohy dat a GDPR soulad. Žádné transakční poplatky z plateb.
+        <p style={{ textAlign: 'center', marginTop: '32px', fontSize: '13px', color: 'var(--ink-tertiary)' }}>
+          Všechny plány zahrnují SSL, zálohy a GDPR soulad.{' '}
+          <a href="mailto:podpora@terminuj.cz" style={{ color: 'var(--violet)', textDecoration: 'none' }}>
+            Máte otázky? Napište nám
+          </a>
         </p>
       </div>
     </section>

@@ -111,7 +111,7 @@ export default function CTA() {
               }}
             >
               <a
-                href="#registrace"
+                href="https://app.terminuj.cz/register"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

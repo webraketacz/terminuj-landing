@@ -16,10 +16,10 @@ const companyLinks = [
 ];
 
 const legalLinks = [
-  { label: 'Obchodní podmínky', href: '#' },
-  { label: 'Ochrana soukromí', href: '#' },
-  { label: 'GDPR', href: '#' },
-  { label: 'Cookies', href: '#' },
+  { label: 'Obchodní podmínky', href: 'https://terminuj.cz/podminky' },
+  { label: 'Ochrana soukromí', href: 'https://terminuj.cz/soukromi' },
+  { label: 'GDPR', href: 'https://terminuj.cz/gdpr' },
+  { label: 'Cookies', href: 'https://terminuj.cz/cookies' },
 ];
 
 export default function Footer() {

@@ -182,7 +182,7 @@ function HeroInner() {
                 animationDelay: '220ms',
               }}
             >
-              <a href="#registrace" className="btn-premium" style={{ fontSize: '15px', padding: '15px 28px' }}>
+              <a href="https://app.terminuj.cz/register" className="btn-premium" style={{ fontSize: '15px', padding: '15px 28px' }}>
                 Začít zdarma
                 <iconify-icon icon="solar:arrow-right-linear" width="16" height="16"></iconify-icon>
               </a>
