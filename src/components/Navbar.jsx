@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Logo } from './Logo';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -58,10 +59,7 @@ export default function Navbar() {
           }}
           aria-label="Terminuj.cz domů"
         >
-          <div className="logo-orb" style={{ width: '32px', height: '32px' }} />
-          <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '18px', letterSpacing: '-0.025em' }}>
-            Terminuj<span style={{ color: 'var(--ink-tertiary)', fontWeight: 500 }}>.cz</span>
-          </span>
+          <Logo size={28} />
         </a>
 
         {/* Desktop links */}
