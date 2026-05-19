@@ -1,0 +1,404 @@
+/* ================================================
+   Terminuj.cz — Brand CSS
+   Soft Premium Warm Minimalism
+   ================================================ */
+
+:root {
+  /* === Fonts === */
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* === Colors — Primary === */
+  --violet: #5B4FE9;
+  --violet-light: #7C6FF5;
+  --violet-pale: #9B8FF9;
+
+  /* === Colors — Accent === */
+  --accent-warm: #E89B6C;
+  --accent-success: #2D9D6F;
+  --accent-warning: #D4A24A;
+  --accent-danger: #C84A4A;
+
+  /* === Ink (text) === */
+  --ink-primary: #1A1A1A;
+  --ink-secondary: #6B6B6B;
+  --ink-tertiary: #A8A8A8;
+
+  /* === Surfaces (Light) === */
+  --surface-base: #FAFAF7;
+  --surface-elevated: #FFFFFF;
+  --surface-sidebar: #F2EFEA;
+  --surface-hover: #F5F3EF;
+  --border: hsl(37 15% 88%);
+  --border-strong: hsl(37 15% 80%);
+
+  /* === Shadows === */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 4px 24px rgba(0, 0, 0, 0.07);
+  --shadow-cta: 0 2px 12px rgba(91, 79, 233, 0.28);
+  --shadow-cta-hover: 0 4px 20px rgba(91, 79, 233, 0.38);
+  --shadow-lg: 0 24px 48px -12px rgba(91, 79, 233, 0.18);
+}
+
+/* === Reset & base === */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--surface-base);
+  color: var(--ink-primary);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* === Paper-grain texture overlay === */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: multiply;
+}
+
+/* === Font utility classes === */
+.font-body { font-family: var(--font-body); }
+.font-heading { font-family: var(--font-heading); letter-spacing: -0.025em; }
+.font-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.04em; }
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.025em;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+/* === Gradient text === */
+.gradient-text {
+  background: linear-gradient(135deg, #5B4FE9 0%, #E89B6C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-violet {
+  background: linear-gradient(135deg, #7B6FF5 0%, #9B8FF9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* === Eyebrow === */
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+
+/* === Hero background === */
+.hero-bg {
+  background:
+    radial-gradient(ellipse at 65% 15%, rgba(91, 79, 233, 0.09) 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 85%, rgba(232, 155, 108, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 70%, rgba(155, 143, 249, 0.05) 0%, transparent 45%),
+    var(--surface-base);
+}
+
+/* === Mesh gradient for sections === */
+.mesh-soft {
+  background:
+    radial-gradient(at 80% 0%, rgba(91, 79, 233, 0.06) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(232, 155, 108, 0.05) 0px, transparent 50%),
+    var(--surface-base);
+}
+
+/* === CTA button (.btn-premium) === */
+.btn-premium {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #5B4FE9 0%, #7C6FF5 100%);
+  color: #FFFFFF;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 28px;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: var(--shadow-cta);
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-premium:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-cta-hover);
+}
+
+.btn-premium:active {
+  transform: translateY(0);
+}
+
+/* === Secondary button === */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--surface-elevated);
+  color: var(--ink-primary);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 28px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+/* === Card === */
+.card-premium {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.card-premium:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+/* === Status badges === */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-body);
+}
+
+.badge-success {
+  color: var(--accent-success);
+  background: rgba(45, 157, 111, 0.08);
+  border: 1px solid rgba(45, 157, 111, 0.25);
+}
+
+.badge-warning {
+  color: var(--accent-warning);
+  background: rgba(212, 162, 74, 0.08);
+  border: 1px solid rgba(212, 162, 74, 0.25);
+}
+
+.badge-violet {
+  color: var(--violet);
+  background: rgba(91, 79, 233, 0.08);
+  border: 1px solid rgba(91, 79, 233, 0.22);
+}
+
+/* === Container === */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* === Section spacing === */
+.section {
+  padding: 96px 0;
+}
+
+@media (max-width: 768px) {
+  .section { padding: 64px 0; }
+}
+
+/* === Animations === */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease both;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Staggered fade-up */
+.stagger > * { animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 80ms; }
+.stagger > *:nth-child(3) { animation-delay: 160ms; }
+.stagger > *:nth-child(4) { animation-delay: 240ms; }
+.stagger > *:nth-child(5) { animation-delay: 320ms; }
+.stagger > *:nth-child(6) { animation-delay: 400ms; }
+.stagger > *:nth-child(7) { animation-delay: 480ms; }
+.stagger > *:nth-child(8) { animation-delay: 560ms; }
+
+/* === Scrollbar === */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(37 15% 78%); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(37 15% 65%); }
+
+/* === Focus ring === */
+*:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible, a:focus-visible {
+  outline-offset: 3px;
+}
+
+/* === Helpers === */
+.text-secondary { color: var(--ink-secondary); }
+.text-tertiary { color: var(--ink-tertiary); }
+.text-violet { color: var(--violet); }
+.text-warm { color: var(--accent-warm); }
+.text-success { color: var(--accent-success); }
+
+/* === Inline grain on dark cards === */
+.dark-card-grain {
+  position: relative;
+  overflow: hidden;
+}
+.dark-card-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* === Logo orb — circular gradient mark === */
+.logo-orb {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #7B6FF5, #1A1A1A 75%);
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 2px 8px rgba(91, 79, 233, 0.25);
+}
+
+.logo-orb::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7B6FF5;
+  box-shadow: 0 0 8px rgba(155, 143, 249, 0.8);
+}
+
+/* === Hide scrollbar utility === */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* === Marquee for trust logos === */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 56px;
+  animation: marquee 30s linear infinite;
+  flex-shrink: 0;
+  padding-right: 56px;
+}
+
+/* === Decorative violet underline === */
+.underline-deco {
+  position: relative;
+  display: inline-block;
+}
+.underline-deco::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 8px;
+  background: linear-gradient(90deg, #5B4FE9, #E89B6C);
+  border-radius: 4px;
+  opacity: 0.25;
+  z-index: -1;
+}
+
+/* === Dotted divider === */
+.dotted-line {
+  background-image: radial-gradient(circle, var(--border-strong) 1px, transparent 1px);
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+  height: 1px;
+  width: 100%;
+}
