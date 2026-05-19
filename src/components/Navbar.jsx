@@ -26,8 +26,8 @@ export default function Navbar() {
         left: '50%',
         transform: 'translateX(-50%)',
         width: '100%',
-        maxWidth: '1100px',
-        padding: '0 16px',
+        maxWidth: '1200px',
+        padding: '0 24px',
         zIndex: 50,
         transition: 'top 0.3s ease',
       }}
