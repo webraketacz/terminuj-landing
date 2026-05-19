@@ -1,4 +1,4 @@
-export function Logo({ size = '1em', color = 'currentColor', accent = '#FF5A3C', className }) {
+export function Logo({ size = '1em', color = 'currentColor', accent = '#FF5A3C', className, style: styleProp }) {
   const height = typeof size === 'number' ? `${size}px` : size;
   return (
     <svg
@@ -6,7 +6,7 @@ export function Logo({ size = '1em', color = 'currentColor', accent = '#FF5A3C',
       viewBox="0 0 520 140"
       role="img"
       aria-label="termínuj"
-      style={{ height, width: 'auto' }}
+      style={{ height, width: 'auto', ...styleProp }}
       className={className}
     >
       <text

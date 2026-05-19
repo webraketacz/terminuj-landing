@@ -1,4 +1,5 @@
 import React from 'react';
+import { Logo } from './Logo';
 
 const productLinks = [
   { label: 'Funkce', href: '#funkce' },
@@ -74,10 +75,7 @@ export default function Footer() {
                 marginBottom: '20px',
               }}
             >
-              <div className="logo-orb" style={{ width: '36px', height: '36px' }} />
-              <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '20px', letterSpacing: '-0.025em' }}>
-                Terminuj<span style={{ color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>.cz</span>
-              </span>
+              <Logo size={22} color="#fff" />
             </a>
             <p
               style={{
@@ -179,6 +177,26 @@ export default function Footer() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* Watermark logo */}
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            opacity: 0.07,
+            pointerEvents: 'none',
+            lineHeight: 0,
+          }}
+        >
+          <Logo
+            color="#fff"
+            accent="#FF5A3C"
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
         </div>
 
         {/* Bottom row */}
