@@ -213,7 +213,8 @@ export default function InteractiveWidgetCustomizer({ className = '' }) {
         border: '1px solid #E8E4DC',
         boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
         fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-        maxWidth: 520,
+        width: '100%',
+        boxSizing: 'border-box',
       }}
     >
       {/* ── Badge ── */}

@@ -39,7 +39,7 @@ export default function WidgetShowcase() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
             gap: '24px',
             marginBottom: '56px',
-            alignItems: 'start',
+            alignItems: 'stretch',
           }}
         >
           <InteractiveWidgetCustomizer />

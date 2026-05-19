@@ -475,7 +475,7 @@ export default function DemoBookingWidget({ className = '' }) {
                 👆 Klikněte na den v kalendáři
               </div>
             ) : (
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap: 8, maxHeight: 220, overflowY:'auto' }}>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap: 8, maxHeight: 220, overflowY:'scroll' }}>
                 {allSlots.map(s => {
                   const isSel = selectedSlot === s.time;
                   return (
@@ -667,8 +667,8 @@ export default function DemoBookingWidget({ className = '' }) {
         borderRadius: 20,
         overflow: 'hidden',
         boxShadow: '0 8px 40px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06)',
-        maxWidth: 580,
-        margin: '0 auto',
+        width: '100%',
+        boxSizing: 'border-box',
       }}
     >
       {/* Browser chrome */}
