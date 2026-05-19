@@ -1,4 +1,6 @@
 import React from 'react';
+import InteractiveWidgetCustomizer from './InteractiveWidgetCustomizer';
+import DemoBookingWidget from './DemoBookingWidget';
 
 export default function WidgetShowcase() {
   return (
@@ -30,101 +32,18 @@ export default function WidgetShowcase() {
           </p>
         </div>
 
-        {/* Two-column showcase: editor + live preview */}
+        {/* Two-column showcase: customizer + live demo */}
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
             gap: '24px',
             marginBottom: '56px',
+            alignItems: 'start',
           }}
         >
-          {/* Editor screenshot */}
-          <div
-            className="card-premium"
-            style={{
-              padding: '0',
-              borderRadius: '24px',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <div style={{ padding: '28px 28px 0' }}>
-              <span className="badge badge-violet" style={{ marginBottom: '14px' }}>
-                <iconify-icon icon="solar:palette-linear" width="12" height="12"></iconify-icon>
-                Editor widgetu
-              </span>
-              <h3 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '8px' }}>Plně přizpůsobitelný</h3>
-              <p style={{ color: 'var(--ink-secondary)', fontSize: '14px', lineHeight: 1.55, marginBottom: '20px' }}>
-                Vyberte ze 4 layoutů, nastavte vlastní paletu a fonty z Google Fonts. Změny vidíte
-                živě, než je nasadíte.
-              </p>
-            </div>
-            <div style={{ flex: 1, padding: '0 14px 14px', display: 'flex', alignItems: 'flex-end' }}>
-              <img
-                src="/screenshots/widget-editor.png"
-                alt="Editor rezervačního widgetu"
-                style={{
-                  display: 'block',
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '12px',
-                  border: '1px solid var(--border)',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Live widget screenshot */}
-          <div
-            style={{
-              borderRadius: '24px',
-              overflow: 'hidden',
-              background: 'linear-gradient(160deg, #1A1A1A 0%, #2a1a5c 100%)',
-              padding: '28px',
-              display: 'flex',
-              flexDirection: 'column',
-              color: '#fff',
-              position: 'relative',
-            }}
-            className="dark-card-grain"
-          >
-            <span
-              className="badge"
-              style={{
-                background: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                color: 'var(--accent-warm)',
-                marginBottom: '14px',
-                alignSelf: 'flex-start',
-              }}
-            >
-              <iconify-icon icon="solar:code-square-linear" width="12" height="12"></iconify-icon>
-              Živý widget
-            </span>
-            <h3 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '8px', color: '#fff' }}>
-              Funguje na mobilu i desktopu
-            </h3>
-            <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '14px', lineHeight: 1.55, marginBottom: '20px' }}>
-              Průvodce v 6 jednoduchých krocích: služba → pobočka → termín → údaje → platba → potvrzení.
-            </p>
-            <div style={{ flex: 1, marginTop: 'auto' }}>
-              <img
-                src="/screenshots/widget-live.png"
-                alt="Rezervační widget — živá ukázka"
-                style={{
-                  display: 'block',
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  boxShadow: '0 12px 32px rgba(0,0,0,0.3)',
-                }}
-              />
-            </div>
-          </div>
+          <InteractiveWidgetCustomizer />
+          <DemoBookingWidget />
         </div>
 
         {/* Embed code mockup */}
