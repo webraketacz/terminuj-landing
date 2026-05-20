@@ -108,7 +108,7 @@ function PackagesCard() {
       ref={ref}
       className="card-premium"
       style={{
-        padding: '32px 28px', borderRadius: '28px', minHeight: '480px',
+        padding: '32px 28px', borderRadius: '28px', height: '480px',
         display: 'flex', flexDirection: 'column',
         transition: 'transform 300ms cubic-bezier(.4,0,.2,1), box-shadow 300ms cubic-bezier(.4,0,.2,1)',
         position: 'relative', overflow: 'hidden',
@@ -369,7 +369,7 @@ function PaymentsCard() {
 
   const gw = GATEWAYS[activeGW];
   const currentAmount = PAY_AMOUNTS[txCount % PAY_AMOUNTS.length];
-  const visibleTx = Array.from({ length: Math.min(txCount, 3) }, (_, i) => ({
+  const visibleTx = Array.from({ length: Math.min(txCount, 2) }, (_, i) => ({
     ...ALL_TX[(txCount - 1 - i + ALL_TX.length * 10) % ALL_TX.length],
     uid: txCount - i,
   }));
@@ -379,8 +379,8 @@ function PaymentsCard() {
       ref={ref}
       className="card-premium"
       style={{
-        padding: '32px 28px', borderRadius: '28px', minHeight: '480px',
-        display: 'flex', flexDirection: 'column', gap: 14,
+        padding: '32px 28px', borderRadius: '28px', height: '480px',
+        display: 'flex', flexDirection: 'column', gap: 10,
         transition: 'transform 300ms cubic-bezier(.4,0,.2,1), box-shadow 300ms cubic-bezier(.4,0,.2,1)',
         position: 'relative', overflow: 'hidden',
       }}
@@ -450,7 +450,7 @@ function PaymentsCard() {
       </div>
 
       {/* Transaction feed */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 5 }}>
+      <div style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 5 }}>
         {visibleTx.length > 0 && (
           <div style={{ fontSize: 10, color: 'var(--ink-tertiary)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>
             Poslední platby
@@ -476,7 +476,7 @@ function PaymentsCard() {
       </div>
 
       {/* 0 % footer */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+      <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px solid var(--border)' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
           <span style={{ fontSize: 26, fontWeight: 900, fontFamily: 'var(--font-display)', color: 'var(--ink-primary)', letterSpacing: '-0.04em', lineHeight: 1 }}>0%</span>
           <span style={{ fontSize: 11, color: 'var(--ink-tertiary)', lineHeight: 1.3 }}>provize<br />z plateb</span>
