@@ -72,138 +72,152 @@ const onCardLeave = e => {
 /* ════════════════════════════════════════════════════════════════════════════
    CARD 1 — Balíčky
    ════════════════════════════════════════════════════════════════════════════ */
-const PLANS = [
-  {
-    id: 'lite', name: 'Lite', price: '189', desc: 'Vlastní zprávy, platby a vouchery',
-    features: ['Vlastní zprávy a připomínky', 'Online platby', 'Vouchery', 'Pracovní doba a blokace'],
-    cta: 'Vybrat Lite', highlight: false,
-    href: 'https://app.terminuj.cz/register?plan=lite',
-  },
-  {
-    id: 'business', name: 'Business', badge: '★', price: '349', desc: 'Vlastní design, analytika, více týmů',
-    features: ['Odstranění brandingu', 'Vlastní design widgetu', 'Balíčky služeb', 'Pokročilá analytika', 'Více zaměstnanců a provozů'],
-    cta: 'Vybrat Business', highlight: true,
-    href: 'https://app.terminuj.cz/register?plan=business',
-  },
-  {
-    id: 'premium', name: 'Premium', price: '790', desc: 'Pokročilé reporty a prioritní podpora',
-    features: ['Pokročilé reporty', 'Rozšířené nastavení designu', 'Prioritní podpora', 'Vyšší provozní limity'],
-    cta: 'Vybrat Premium', highlight: false,
-    href: 'https://app.terminuj.cz/register?plan=premium',
-  },
-];
+const PKG_CODES = ['YOGA-A3F2K', 'YOGA-X9M1P', 'YOGA-R7T4Q', 'YOGA-C6N8W', 'YOGA-K2L5J'];
 
 function PackagesCard() {
-  const [active, setActive] = useState(1);
-  const [userPicked, setUserPicked] = useState(false);
+  const ref = useRef(null);
+  const inView = useInView(ref);
   const reduced = usePRM();
+  const [showCodes, setShowCodes] = useState(false);
+  const [visibleCodes, setVisibleCodes] = useState(0);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastKey, setToastKey] = useState(0);
 
   useEffect(() => {
-    if (userPicked || reduced) return;
-    const id = setInterval(() => setActive(a => (a + 1) % PLANS.length), 3800);
-    return () => clearInterval(id);
-  }, [userPicked, reduced]);
+    if (!inView || reduced) return;
+    const timeouts = [];
+    const t = (ms, fn) => timeouts.push(setTimeout(fn, ms));
 
-  const plan = PLANS[active];
+    const runCycle = () => {
+      setShowCodes(false);
+      setVisibleCodes(0);
+      setToastVisible(false);
+      t(2400, () => setShowCodes(true));
+      PKG_CODES.forEach((_, i) => t(2400 + (i + 1) * 260, () => setVisibleCodes(v => v + 1)));
+      t(4000, () => { setToastKey(k => k + 1); setToastVisible(true); });
+      t(6800, () => setToastVisible(false));
+    };
+
+    runCycle();
+    const id = setInterval(runCycle, 9000);
+    return () => { timeouts.forEach(clearTimeout); clearInterval(id); };
+  }, [inView, reduced]);
 
   return (
     <div
+      ref={ref}
       className="card-premium"
       style={{
         padding: '32px 28px', borderRadius: '28px', minHeight: '480px',
         display: 'flex', flexDirection: 'column',
         transition: 'transform 300ms cubic-bezier(.4,0,.2,1), box-shadow 300ms cubic-bezier(.4,0,.2,1)',
+        position: 'relative', overflow: 'hidden',
       }}
       onMouseEnter={onCardEnter}
       onMouseLeave={onCardLeave}
     >
+      {/* Email toast */}
+      {toastVisible && (
+        <div
+          key={toastKey}
+          style={{
+            position: 'absolute', top: 14, right: 14,
+            background: '#fff', border: '1px solid var(--border)',
+            borderRadius: 12, padding: '8px 12px',
+            fontSize: 12, fontWeight: 500, color: 'var(--ink-primary)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+            display: 'flex', alignItems: 'center', gap: 6,
+            animation: 'bento-toast 2.7s ease-in-out both',
+            zIndex: 2, whiteSpace: 'nowrap',
+          }}
+        >
+          <iconify-icon icon="solar:letter-linear" width="14" height="14" style={{ color: 'var(--violet)' }} />
+          Kódy odeslány zákazníkovi
+        </div>
+      )}
+
       {/* Header */}
       <div style={{ marginBottom: 18 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
           <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(91,79,233,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--violet)' }}>
-            <iconify-icon icon="solar:box-minimalistic-linear" width="18" height="18" />
+            <iconify-icon icon="solar:ticket-sale-linear" width="18" height="18" />
           </div>
           <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink-primary)' }}>Balíčky</span>
         </div>
-        <h3 style={{ fontSize: '20px', lineHeight: 1.22, marginBottom: 4, fontWeight: 700 }}>
-          Cena, která roste s vámi.
+        <h3 style={{ fontSize: '19px', lineHeight: 1.22, marginBottom: 6, fontWeight: 700 }}>
+          Prodávejte předplacené vstupy přímo z webu.
         </h3>
-        <p style={{ fontSize: 13, color: 'var(--ink-secondary)' }}>14 dní zdarma · bez platební karty.</p>
+        <p style={{ fontSize: 12, color: 'var(--ink-secondary)', lineHeight: 1.5 }}>
+          Zákazník zaplatí, okamžitě dostane vouchery a při rezervaci je jednoduše uplatní.
+        </p>
       </div>
 
-      {/* Tab strip */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 16, background: 'var(--surface-hover)', borderRadius: 12, padding: '4px' }}>
-        {PLANS.map((p, i) => (
-          <button
-            key={p.id}
-            onClick={() => { setActive(i); setUserPicked(true); }}
-            style={{
-              flex: 1, padding: '7px 4px', borderRadius: 8, border: 'none', cursor: 'pointer',
-              fontSize: 12, fontWeight: i === active ? 700 : 500,
-              color: i === active ? '#fff' : 'var(--ink-secondary)',
-              background: i === active ? 'var(--violet)' : 'transparent',
-              transition: 'all 0.2s',
-              position: 'relative',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {p.name}
-            {p.badge && i === active && (
-              <span style={{ position: 'absolute', top: -6, right: 0, background: 'var(--accent-warm)', color: '#fff', fontSize: 8, fontWeight: 800, padding: '2px 4px', borderRadius: 20 }}>
-                {p.badge}
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
-
-      {/* Plan content */}
-      <div
-        key={plan.id}
-        className="bento-anim"
-        style={{ flex: 1, display: 'flex', flexDirection: 'column', animation: 'bento-plan-in 0.22s cubic-bezier(.4,0,.2,1) both' }}
-      >
-        <div style={{ marginBottom: 14, paddingBottom: 14, borderBottom: '1px solid var(--border)' }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-            <span style={{ fontSize: 34, fontWeight: 900, fontFamily: 'var(--font-display)', color: plan.highlight ? 'var(--violet)' : 'var(--ink-primary)', letterSpacing: '-0.04em', lineHeight: 1 }}>
-              {plan.price}
-            </span>
-            <span style={{ fontSize: 13, color: 'var(--ink-secondary)' }}>Kč / měs.</span>
+      {/* Package preview tile */}
+      <div style={{
+        background: 'var(--surface-hover)', borderRadius: 14, padding: '14px 16px',
+        marginBottom: 14, border: '1px solid var(--border)',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink-primary)', marginBottom: 2 }}>10 lekcí jógy</div>
+            <div style={{ fontSize: 11, color: 'var(--ink-tertiary)' }}>Jóga pro začátečníky · 365 dní</div>
           </div>
-          <span style={{ fontSize: 12, color: 'var(--ink-tertiary)' }}>{plan.desc}</span>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: 11, color: 'var(--ink-tertiary)', textDecoration: 'line-through' }}>1 500 Kč</div>
+            <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--violet)', fontFamily: 'var(--font-display)', letterSpacing: '-0.04em', lineHeight: 1 }}>990 Kč</div>
+          </div>
         </div>
-
-        <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 18px', display: 'flex', flexDirection: 'column', gap: 9, flex: 1 }}>
-          {plan.features.map(f => (
-            <li key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: 'var(--ink-primary)', lineHeight: 1.4 }}>
-              <span style={{ width: 16, height: 16, borderRadius: '50%', background: 'rgba(22,179,100,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
-                <iconify-icon icon="solar:check-read-linear" width="10" height="10" style={{ color: '#16B364' }} />
-              </span>
-              {f}
-            </li>
-          ))}
-        </ul>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ fontSize: 11, background: 'rgba(22,179,100,0.1)', color: '#16B364', padding: '3px 8px', borderRadius: 6, fontWeight: 600 }}>
+            Ušetříte 510 Kč
+          </span>
+          <span style={{ fontSize: 11, color: 'var(--ink-tertiary)' }}>· 10 vstupů</span>
+        </div>
       </div>
 
-      {/* CTA */}
-      <a
-        href={plan.href}
-        style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-          padding: '12px 20px',
-          background: plan.highlight ? 'linear-gradient(135deg, var(--violet), var(--violet-light))' : 'var(--surface-hover)',
-          color: plan.highlight ? '#fff' : 'var(--ink-primary)',
-          borderRadius: 12, fontSize: 13, fontWeight: 600, textDecoration: 'none',
-          border: plan.highlight ? 'none' : '1px solid var(--border)',
-          transition: 'opacity 0.15s',
-          boxShadow: plan.highlight ? 'var(--shadow-cta)' : 'none',
-        }}
-        onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }}
-        onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
-      >
-        {plan.cta}
-        <iconify-icon icon="solar:arrow-right-linear" width="14" height="14" />
-      </a>
+      {/* Dynamic section: hints → generated codes */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {!showCodes ? (
+          <>
+            <div style={{ fontSize: 10, color: 'var(--ink-tertiary)', marginBottom: 2, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Jak funguje prodej</div>
+            {[
+              { icon: 'solar:link-circle-linear', text: 'Veřejná stránka s platbou kartou (Stripe)' },
+              { icon: 'solar:code-square-linear',  text: 'Iframe embed přímo na váš web' },
+              { icon: 'solar:ticket-linear',        text: 'Kódy YOGA-XXXXX vygenerovány automaticky' },
+            ].map(({ icon, text }) => (
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--ink-primary)', padding: '6px 0' }}>
+                <iconify-icon icon={icon} width="14" height="14" style={{ color: 'var(--violet)', flexShrink: 0 }} />
+                {text}
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            <div style={{ fontSize: 10, color: 'var(--ink-tertiary)', marginBottom: 2, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Vygenerované kódy</div>
+            {PKG_CODES.slice(0, visibleCodes).map(code => (
+              <div
+                key={code}
+                className="bento-anim"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '6px 10px', background: 'var(--surface-hover)',
+                  borderRadius: 8, border: '1px solid var(--border)',
+                  animation: 'bento-plan-in 0.2s cubic-bezier(.4,0,.2,1) both',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <iconify-icon icon="solar:ticket-linear" width="12" height="12" style={{ color: 'var(--violet)' }} />
+                  <span style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--ink-primary)', fontSize: 11 }}>{code}</span>
+                </div>
+                <span style={{ fontSize: 10, color: '#16B364', fontWeight: 600 }}>Aktivní</span>
+              </div>
+            ))}
+            {visibleCodes < PKG_CODES.length && (
+              <div style={{ height: 30, borderRadius: 8, background: 'var(--surface-hover)', opacity: 0.35, border: '1px dashed var(--border)' }} />
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -305,108 +319,174 @@ function CalendarBentoCard() {
 /* ════════════════════════════════════════════════════════════════════════════
    CARD 3 — Online platby
    ════════════════════════════════════════════════════════════════════════════ */
-const RING_R = 80;
-const RING_C = 2 * Math.PI * RING_R; // ≈ 502.65
+const GATEWAYS = [
+  { id: 'stripe',  label: 'Stripe',  color: '#635BFF' },
+  { id: 'gopay',   label: 'GoPay',   color: '#0099E6' },
+  { id: 'comgate', label: 'Comgate', color: '#D94040' },
+];
+
+const ALL_TX = [
+  { gw: 'Stripe',  color: '#635BFF', amount: '850 Kč',   name: 'Petra S.' },
+  { gw: 'GoPay',   color: '#0099E6', amount: '1 200 Kč', name: 'Jana N.'  },
+  { gw: 'Comgate', color: '#D94040', amount: '650 Kč',   name: 'Tomáš H.' },
+  { gw: 'Stripe',  color: '#635BFF', amount: '990 Kč',   name: 'Marta K.' },
+  { gw: 'GoPay',   color: '#0099E6', amount: '750 Kč',   name: 'Karel B.' },
+];
+
+const PAY_AMOUNTS = ['850 Kč', '1 200 Kč', '650 Kč'];
 
 function PaymentsCard() {
   const ref = useRef(null);
   const inView = useInView(ref);
   const reduced = usePRM();
-  const [drawn, setDrawn]           = useState(false);
-  const [toastKey, setToastKey]     = useState(0);
-  const [toastVisible, setToastVisible] = useState(false);
+  const [activeGW, setActiveGW] = useState(0);
+  const [userPicked, setUserPicked] = useState(false);
+  const [phase, setPhase] = useState('idle');
+  const [txCount, setTxCount] = useState(0);
 
   useEffect(() => {
-    if (!inView) return;
+    if (userPicked || reduced || !inView) return;
+    const id = setInterval(() => setActiveGW(a => (a + 1) % GATEWAYS.length), 3200);
+    return () => clearInterval(id);
+  }, [userPicked, reduced, inView]);
+
+  useEffect(() => {
+    if (!inView || reduced) return;
     const timeouts = [];
     const t = (ms, fn) => timeouts.push(setTimeout(fn, ms));
 
-    if (!reduced) t(250, () => setDrawn(true));
-
-    let intervalId;
-    const showToast = () => {
-      setToastKey(k => k + 1);
-      setToastVisible(true);
-      t(2700, () => setToastVisible(false));
+    const runCycle = () => {
+      setPhase('idle');
+      t(1400, () => setPhase('processing'));
+      t(3000, () => { setPhase('success'); setTxCount(c => c + 1); });
+      t(5800, () => setPhase('idle'));
     };
-    t(2200, showToast);
-    intervalId = setInterval(showToast, 5500);
 
-    return () => { timeouts.forEach(clearTimeout); clearInterval(intervalId); };
+    runCycle();
+    const id = setInterval(runCycle, 7500);
+    return () => { timeouts.forEach(clearTimeout); clearInterval(id); };
   }, [inView, reduced]);
 
-  const TOAST_TEXTS = ['850 Kč · Petr S.', '1 200 Kč · Jana N.', '650 Kč · Simona K.'];
-  const toastText   = TOAST_TEXTS[(toastKey - 1) % TOAST_TEXTS.length];
+  const gw = GATEWAYS[activeGW];
+  const currentAmount = PAY_AMOUNTS[txCount % PAY_AMOUNTS.length];
+  const visibleTx = Array.from({ length: Math.min(txCount, 3) }, (_, i) => ({
+    ...ALL_TX[(txCount - 1 - i + ALL_TX.length * 10) % ALL_TX.length],
+    uid: txCount - i,
+  }));
 
   return (
     <div
       ref={ref}
       className="card-premium"
       style={{
-        padding: '36px 32px', borderRadius: '28px', minHeight: '480px',
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-        position: 'relative', overflow: 'hidden',
+        padding: '32px 28px', borderRadius: '28px', minHeight: '480px',
+        display: 'flex', flexDirection: 'column', gap: 14,
         transition: 'transform 300ms cubic-bezier(.4,0,.2,1), box-shadow 300ms cubic-bezier(.4,0,.2,1)',
+        position: 'relative', overflow: 'hidden',
       }}
       onMouseEnter={onCardEnter}
       onMouseLeave={onCardLeave}
     >
-      {/* Payment toast */}
-      {toastVisible && (
-        <div
-          key={toastKey}
-          style={{
-            position: 'absolute', top: 14, right: 14,
-            background: '#fff', border: '1px solid var(--border)',
-            borderRadius: 12, padding: '8px 12px',
-            fontSize: 12, fontWeight: 500, color: 'var(--ink-primary)',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-            display: 'flex', alignItems: 'center', gap: 6,
-            animation: 'bento-toast 2.7s ease-in-out both',
-            zIndex: 2, whiteSpace: 'nowrap',
-          }}
-        >
-          <span style={{ color: '#16B364', fontSize: 13 }}>💳</span>
-          <span>Platba přijata · <strong>{toastText}</strong></span>
-        </div>
-      )}
-
-      <div style={{ textAlign: 'center' }}>
-        <span className="eyebrow" style={{ color: 'var(--accent-warm)', display: 'block', marginBottom: '8px' }}>Online platby</span>
-        <h3 style={{ fontSize: '18px', fontWeight: 700 }}>Bez práce s fakturami</h3>
+      {/* Header */}
+      <div>
+        <span className="eyebrow" style={{ color: 'var(--accent-warm)', display: 'block', marginBottom: 6 }}>Online platby</span>
+        <h3 style={{ fontSize: '19px', fontWeight: 700, lineHeight: 1.22 }}>Zákazníci platí, jak chtějí.</h3>
       </div>
 
-      {/* SVG ring */}
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <svg width="200" height="200" viewBox="0 0 200 200">
-          <defs>
-            <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#5B4FE9" />
-              <stop offset="100%" stopColor="#9B8FF9" />
-            </linearGradient>
-          </defs>
-          <circle cx="100" cy="100" r={RING_R} fill="none" stroke="var(--surface-hover)" strokeWidth="13" />
-          <circle
-            cx="100" cy="100" r={RING_R}
-            fill="none" stroke="url(#ring-grad)" strokeWidth="13" strokeLinecap="round"
-            strokeDasharray={RING_C}
-            strokeDashoffset={drawn ? RING_C * 0.02 : RING_C}
-            transform="rotate(-90 100 100)"
-            style={{ transition: reduced ? 'none' : 'stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)' }}
-          />
-          <text x="100" y="94" textAnchor="middle" fontSize="38" fontWeight="900"
-            fill="var(--ink-primary)" fontFamily="var(--font-display)">0%</text>
-          <text x="100" y="113" textAnchor="middle" fontSize="9" fontWeight="600"
-            fill="var(--ink-tertiary)" fontFamily="var(--font-body)" letterSpacing="1">PROVIZE Z PLATEB</text>
-        </svg>
+      {/* Gateway tabs */}
+      <div style={{ display: 'flex', gap: 4, background: 'var(--surface-hover)', borderRadius: 12, padding: '4px' }}>
+        {GATEWAYS.map((g, i) => (
+          <button
+            key={g.id}
+            onClick={() => { setActiveGW(i); setUserPicked(true); }}
+            style={{
+              flex: 1, padding: '7px 4px', borderRadius: 8, border: 'none', cursor: 'pointer',
+              fontSize: 12, fontWeight: i === activeGW ? 700 : 500,
+              color: i === activeGW ? '#fff' : 'var(--ink-secondary)',
+              background: i === activeGW ? g.color : 'transparent',
+              transition: 'all 0.22s',
+            }}
+          >
+            {g.label}
+          </button>
+        ))}
       </div>
 
-      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-        <div className="badge" style={{ background: '#fff', border: '1px solid var(--border)' }}>
-          <iconify-icon icon="logos:stripe" width="36" height="14" />
+      {/* Payment terminal */}
+      <div style={{ background: 'var(--surface-hover)', borderRadius: 14, padding: '14px 16px', border: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+          <div>
+            <div style={{ fontSize: 11, color: 'var(--ink-tertiary)', marginBottom: 3 }}>Masáž · 60 min</div>
+            <div
+              key={currentAmount}
+              className="bento-anim"
+              style={{ fontSize: 22, fontWeight: 900, fontFamily: 'var(--font-display)', color: 'var(--ink-primary)', letterSpacing: '-0.04em', lineHeight: 1, animation: 'bento-plan-in 0.22s ease both' }}
+            >
+              {currentAmount}
+            </div>
+          </div>
+          <div style={{ width: 38, height: 38, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', background: gw.color + '18', transition: 'background 0.3s', flexShrink: 0 }}>
+            {gw.id === 'stripe'
+              ? <iconify-icon icon="logos:stripe" width="30" height="12" />
+              : <span style={{ fontSize: 8, fontWeight: 900, color: gw.color, letterSpacing: '-0.01em', textAlign: 'center', lineHeight: 1.1 }}>{gw.label.toUpperCase()}</span>
+            }
+          </div>
         </div>
-        <div className="badge" style={{ background: '#fff', border: '1px solid var(--border)', padding: '6px 12px', color: 'var(--ink-primary)', fontWeight: 700, fontSize: '11px' }}>
-          GoPay
+        <div style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--ink-tertiary)', letterSpacing: '0.12em', marginBottom: 12 }}>
+          **** **** **** 4242
+        </div>
+        <div style={{
+          background: phase === 'success' ? '#16B364' : gw.color,
+          color: '#fff', borderRadius: 9, padding: '10px 14px',
+          fontSize: 12, fontWeight: 600,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+          transition: 'background 0.35s cubic-bezier(.4,0,.2,1)',
+          cursor: 'default', userSelect: 'none',
+        }}>
+          {phase === 'idle' && <>Zaplatit přes {gw.label} <iconify-icon icon="solar:arrow-right-linear" width="13" /></>}
+          {phase === 'processing' && <><span className="bento-anim" style={{ animation: 'bento-pulse-dot 0.7s ease-in-out infinite' }}>●</span> Zpracovávám...</>}
+          {phase === 'success' && <><iconify-icon icon="solar:check-circle-linear" width="14" /> Platba přijata!</>}
+        </div>
+      </div>
+
+      {/* Transaction feed */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 5 }}>
+        {visibleTx.length > 0 && (
+          <div style={{ fontSize: 10, color: 'var(--ink-tertiary)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>
+            Poslední platby
+          </div>
+        )}
+        {visibleTx.map((tx, i) => (
+          <div
+            key={tx.uid}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '6px 10px', background: 'var(--surface-hover)', borderRadius: 8,
+              border: '1px solid var(--border)',
+              animation: i === 0 ? 'bento-plan-in 0.2s cubic-bezier(.4,0,.2,1) both' : 'none',
+              opacity: 1 - i * 0.22,
+            }}
+          >
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: tx.color, flexShrink: 0 }} />
+            <span style={{ fontSize: 12, color: 'var(--ink-primary)', flex: 1 }}>{tx.name}</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-primary)' }}>{tx.amount}</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: tx.color }}>{tx.gw}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* 0 % footer */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
+          <span style={{ fontSize: 26, fontWeight: 900, fontFamily: 'var(--font-display)', color: 'var(--ink-primary)', letterSpacing: '-0.04em', lineHeight: 1 }}>0%</span>
+          <span style={{ fontSize: 11, color: 'var(--ink-tertiary)', lineHeight: 1.3 }}>provize<br />z plateb</span>
+        </div>
+        <div style={{ display: 'flex', gap: 5 }}>
+          {GATEWAYS.map(g => (
+            <div key={g.id} style={{ padding: '3px 8px', background: g.color + '12', borderRadius: 6, border: `1px solid ${g.color}35`, fontSize: 10, fontWeight: 700, color: g.color }}>
+              {g.label}
+            </div>
+          ))}
         </div>
       </div>
     </div>
