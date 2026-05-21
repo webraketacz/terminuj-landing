@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -224,6 +224,8 @@ function CheckIcon({ ok, note }) {
 
 export default function CenikPage() {
   const [yearly, setYearly] = useState(false);
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
     <div style={{ backgroundColor: 'var(--surface-base)', minHeight: '100vh' }}>
