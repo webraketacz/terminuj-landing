@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const PLANS = [
   {
     id: 'free',
     name: 'Free',
-    desc: 'Pro jednotlivce a začínající provozy, které chtějí spustit rezervace bez vstupních nákladů.',
+    tagline: 'Začněte zdarma. Žádná kreditní karta. Neomezená doba používání.',
     priceMonth: 0,
     priceYear: 0,
-    label: 'navždy',
-    features: [
-      'Veřejná rezervační stránka',
-      'Widget na web / iframe',
-      'E-mailové notifikace',
-      'Základní přehled rezervací',
-      'Branding Terminuj.cz',
+    highlights: [
+      { icon: 'solar:calendar-bold', text: '200 rezervací / měsíc' },
+      { icon: 'solar:layers-bold', text: '3 služby, 2 zaměstnanci, 1 pobočka' },
+      { icon: 'solar:globe-bold', text: 'Veřejná rezervační stránka' },
+      { icon: 'solar:widget-bold', text: 'Widget na web / iframe' },
+      { icon: 'solar:bell-bold', text: 'E-mailové notifikace' },
     ],
     btn: 'Začít zdarma',
     href: 'https://app.terminuj.cz/register',
@@ -22,17 +22,15 @@ const PLANS = [
   {
     id: 'lite',
     name: 'Lite',
-    desc: 'Ideální pro služby, které chtějí víc automatiky, zpráv a základní prodej bez omezení.',
+    tagline: 'Online platby, vouchery a vlastní barvy – vše za méně než 200 Kč měsíčně.',
     priceMonth: 189,
     priceYear: 157,
-    label: '/měs.',
-    features: [
-      'Vše z Free',
-      'Vlastní zprávy a připomínky',
-      'Pracovní doba, volná a blokace',
-      'Online platby',
-      'Vouchery',
-      'Branding Terminuj.cz',
+    highlights: [
+      { icon: 'solar:calendar-bold', text: '1 100 rezervací / měsíc' },
+      { icon: 'solar:layers-bold', text: '11 služeb, 6 zaměstnanců, 3 pobočky' },
+      { icon: 'solar:card-bold', text: 'Online platby (Stripe, GoPay)' },
+      { icon: 'solar:gift-bold', text: 'Vouchery a dárkové poukazy' },
+      { icon: 'solar:link-bold', text: 'Vlastní URL zákaznické stránky' },
     ],
     btn: 'Vybrat Lite',
     href: 'https://app.terminuj.cz/register?plan=lite',
@@ -42,17 +40,15 @@ const PLANS = [
     id: 'business',
     name: 'Business',
     badge: 'Nejoblíbenější',
-    desc: 'Silný balíček pro aktivní týmy, které chtějí prodávat, automatizovat a přizpůsobit si vše.',
+    tagline: 'Váš brand, vaše pravidla. Neomezené rezervace, čekací listina a balíčky.',
     priceMonth: 349,
     priceYear: 290,
-    label: '/měs.',
-    features: [
-      'Vše z Lite',
-      'Odstranění brandingu Terminuj.cz',
-      'Vlastní design widgetu a stránky',
-      'Balíčky služeb',
-      'Pokročilá analytika',
-      'Více zaměstnanců a provozů',
+    highlights: [
+      { icon: 'solar:infinity-bold', text: 'Neomezené rezervace' },
+      { icon: 'solar:layers-bold', text: '25 služeb, 15 zaměstnanců, 10 poboček' },
+      { icon: 'solar:shield-bold', text: 'Odstranění brandingu Terminuj.cz' },
+      { icon: 'solar:box-bold', text: 'Balíčky a čekací listina' },
+      { icon: 'solar:chart-bold', text: 'Pokročilá analytika + export CSV' },
     ],
     btn: 'Upgradovat',
     href: 'https://app.terminuj.cz/register?plan=business',
@@ -61,17 +57,15 @@ const PLANS = [
   {
     id: 'premium',
     name: 'Premium',
-    desc: 'Pro firmy, které chtějí maximum přizpůsobení, pokročilý prodej a vyšší provozní limity.',
+    tagline: 'Pro největší provozovny a agentury. Neomezeno vše, prioritní podpora.',
     priceMonth: 790,
     priceYear: 656,
-    label: '/měs.',
-    features: [
-      'Vše z Business',
-      'Pokročilé reporty',
-      'Rozšířené nastavení designu',
-      'Prioritní podpora',
-      'Rozšířené platby a prodej',
-      'Vyšší provozní limity',
+    highlights: [
+      { icon: 'solar:infinity-bold', text: 'Neomezeno vše (pobočky, zaměstnanci, služby)' },
+      { icon: 'solar:star-bold', text: 'White-label – žádný Terminuj.cz branding' },
+      { icon: 'solar:headphones-round-bold', text: 'Prioritní podpora (odpověď do 4 hodin)' },
+      { icon: 'solar:graph-bold', text: 'Pokročilé reporty a exporty' },
+      { icon: 'solar:code-bold', text: 'API přístup (připravujeme)' },
     ],
     btn: 'Upgradovat',
     href: 'https://app.terminuj.cz/register?plan=premium',
@@ -260,7 +254,7 @@ export default function Pricing() {
                   marginBottom: '24px', lineHeight: 1.5,
                   minHeight: '54px', position: 'relative', zIndex: 1,
                 }}>
-                  {plan.desc}
+                  {plan.tagline}
                 </p>
 
                 {/* Price */}
@@ -275,25 +269,25 @@ export default function Pricing() {
                     {' '}Kč
                   </span>
                   <span style={{ fontSize: '13px', color: plan.highlight ? 'rgba(255,255,255,0.45)' : 'var(--ink-tertiary)', fontWeight: 400 }}>
-                    {isFree ? 'navždy' : yearly ? '/měs. ročně' : plan.label}
+                    {isFree ? 'navždy' : yearly ? '/měs. ročně' : '/měs.'}
                   </span>
                 </div>
 
-                {/* Features */}
+                {/* Highlights */}
                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px', flex: 1, position: 'relative', zIndex: 1 }}>
-                  {plan.features.map((f) => (
-                    <li key={f} style={{
+                  {plan.highlights.map((h) => (
+                    <li key={h.text} style={{
                       display: 'flex', alignItems: 'flex-start', gap: '10px',
                       padding: '7px 0', fontSize: '14px', lineHeight: 1.45,
                       color: plan.highlight ? 'rgba(255,255,255,0.82)' : 'var(--ink-secondary)',
                       borderBottom: `1px solid ${plan.highlight ? 'rgba(255,255,255,0.06)' : 'var(--border)'}`,
                     }}>
                       <iconify-icon
-                        icon="solar:check-circle-bold"
+                        icon={h.icon}
                         width="16" height="16"
                         style={{ color: plan.highlight ? '#A09AF8' : 'var(--violet)', flexShrink: 0, marginTop: '2px' }}
                       ></iconify-icon>
-                      {f}
+                      {h.text}
                     </li>
                   ))}
                 </ul>
@@ -312,6 +306,7 @@ export default function Pricing() {
                           transition: 'transform 0.15s ease, box-shadow 0.15s ease',
                           boxShadow: '0 8px 20px rgba(91, 79, 233, 0.45)',
                           position: 'relative', zIndex: 1,
+                          boxSizing: 'border-box',
                         }
                       : {
                           display: 'block', width: '100%', padding: '14px',
@@ -335,13 +330,45 @@ export default function Pricing() {
           })}
         </div>
 
-        {/* Footer note */}
-        <p style={{ textAlign: 'center', marginTop: '32px', fontSize: '13px', color: 'var(--ink-tertiary)' }}>
-          Všechny plány zahrnují SSL, zálohy a GDPR soulad.{' '}
-          <a href="mailto:podpora@terminuj.cz" style={{ color: 'var(--violet)', textDecoration: 'none' }}>
-            Máte otázky? Napište nám
-          </a>
-        </p>
+        {/* Footer note + link to full comparison */}
+        <div style={{ textAlign: 'center', marginTop: '36px' }}>
+          <Link
+            to="/cenik"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '12px 24px',
+              borderRadius: '999px',
+              border: '1px solid var(--border)',
+              background: 'var(--surface-elevated)',
+              color: 'var(--ink-secondary)',
+              fontFamily: 'var(--font-body)',
+              fontSize: '14px',
+              fontWeight: 600,
+              textDecoration: 'none',
+              transition: 'all 0.2s ease',
+              marginBottom: '20px',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--violet)';
+              e.currentTarget.style.color = 'var(--violet)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border)';
+              e.currentTarget.style.color = 'var(--ink-secondary)';
+            }}
+          >
+            Zobrazit podrobné srovnání plánů
+            <iconify-icon icon="solar:arrow-right-linear" width="15" height="15"></iconify-icon>
+          </Link>
+          <p style={{ fontSize: '13px', color: 'var(--ink-tertiary)' }}>
+            Všechny plány zahrnují SSL, zálohy a GDPR soulad.{' '}
+            <a href="mailto:podpora@terminuj.cz" style={{ color: 'var(--violet)', textDecoration: 'none' }}>
+              Máte otázky? Napište nám
+            </a>
+          </p>
+        </div>
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
 
 const NAV_CSS = `
@@ -94,13 +95,13 @@ const NAV_CSS = `
 `;
 
 const LINKS = [
-  { label: 'Funkce',          href: '#funkce',         num: '01' },
-  { label: 'Jak to funguje',  href: '#jak-to-funguje', num: '02' },
-  { label: 'Ceník',           href: '#cenik',          num: '03' },
-  { label: 'FAQ',             href: '#faq',            num: '04' },
+  { label: 'Funkce',          anchor: '#funkce',         num: '01' },
+  { label: 'Jak to funguje',  anchor: '#jak-to-funguje', num: '02' },
+  { label: 'Ceník',           anchor: '#cenik',          num: '03' },
+  { label: 'FAQ',             anchor: '#faq',            num: '04' },
 ];
 
-function MobileMenu({ open, onClose }) {
+function MobileMenu({ open, onClose, links }) {
   const ref = useRef(null);
 
   // Trap focus + Escape key
@@ -166,7 +167,7 @@ function MobileMenu({ open, onClose }) {
       }}>
         {/* Links */}
         <nav>
-          {LINKS.map((link, i) => (
+          {links.map((link, i) => (
             <div
               key={link.label}
               style={{
@@ -272,6 +273,8 @@ function MobileMenu({ open, onClose }) {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const isSubpage = location.pathname !== '/';
 
   // Inject CSS once
   useEffect(() => {
@@ -289,7 +292,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const links = LINKS;
+  const links = LINKS.map(l => ({ ...l, href: isSubpage ? `/${l.anchor}` : l.anchor }));
 
   return (
     <>
@@ -327,7 +330,7 @@ export default function Navbar() {
         >
           {/* Logo */}
           <a
-            href="#"
+            href={isSubpage ? '/' : '#'}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -414,7 +417,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} links={links} />
     </>
   );
 }
